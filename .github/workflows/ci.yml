@@ -1,0 +1,22 @@
+
+name: My First CI Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: self-hosted
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Show runner information
+        run: |
+          echo "Hello from my Self-Hosted Runner!"
+          echo "The CI/CD pipeline is working!"
+          hostname
+          whoami
