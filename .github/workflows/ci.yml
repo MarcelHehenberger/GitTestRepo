@@ -1,4 +1,5 @@
-name: CI
+
+name: Python CI Pipeline
 
 on:
   push:
@@ -7,44 +8,60 @@ on:
 permissions:
   contents: read
 
-env:
-  UV_CACHE_DIR: ${{ github.workspace }}/.uv-cache
-  UV_COMPILE_BYTECODE: "1"
-  UV_LINK_MODE: copy
-
 jobs:
   lint:
+    name: Code Quality
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v4
-      - uses: astral-sh/setup-uv@v5
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
         with:
           enable-cache: true
-          cache-dependency-glob: uv.lock
-      - run: uv sync --locked
-      - run: uv run ruff check
-      - run: uv run ruff format --check
+
+      - name: Install dependencies
+        run: uv sync --locked
+
+      - name: Check code with Ruff
+        run: uv run ruff check
+
+      - name: Check formatting
+        run: uv run ruff format --check
         continue-on-error: true
 
   typechecking:
+    name: Type Checking
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v4
-      - uses: astral-sh/setup-uv@v5
-        with:
-          enable-cache: true
-          cache-dependency-glob: uv.lock
-      - run: uv sync --locked
-      - run: uv run ty check
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+
+      - name: Install dependencies
+        run: uv sync --locked
+
+      - name: Run Ty
+        run: uv run ty check
 
   test:
+    name: Run Tests
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v4
-      - uses: astral-sh/setup-uv@v5
-        with:
-          enable-cache: true
-          cache-dependency-glob: uv.lock
-      - run: uv sync --locked
-      - run: uv run pytest
-    
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+
+      - name: Install dependencies
+        run: uv sync --locked
+
+      - name: Run Pytest
+        run: uv run pytest
