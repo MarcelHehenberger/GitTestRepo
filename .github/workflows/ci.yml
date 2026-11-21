@@ -11,7 +11,7 @@ permissions:
 jobs:
   lint:
     name: Code Quality
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
 
     steps:
       - name: Checkout repository
@@ -34,7 +34,7 @@ jobs:
 
   typechecking:
     name: Type Checking
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
 
     steps:
       - name: Checkout repository
@@ -51,7 +51,7 @@ jobs:
 
   test:
     name: Run Tests
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
 
     steps:
       - name: Checkout repository
